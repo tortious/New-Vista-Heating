@@ -87,9 +87,16 @@
     );
 
     revealEls.forEach(function (el, i) {
-      el.classList.add('reveal-on-scroll');
       el.style.transitionDelay = (i % 3) * 0.1 + 's';
-      observer.observe(el);
+
+      /* Elements already in the viewport get revealed immediately */
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom >= 0) {
+        el.classList.add('reveal-on-scroll', 'revealed');
+      } else {
+        el.classList.add('reveal-on-scroll');
+        observer.observe(el);
+      }
     });
   }
 
